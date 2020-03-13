@@ -1,13 +1,8 @@
 import React from 'react'
 import { makeStyles } from '@material-ui/core/styles'
-import {
-  AppBar,
-  Toolbar,
-  Button,
-  Typography,
-  IconButton
-} from '@material-ui/core'
+import { AppBar, Toolbar, Typography, IconButton } from '@material-ui/core'
 import MenuIcon from '@material-ui/icons/Menu'
+import CreateDialog from '../Dialogs/Create'
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -37,9 +32,9 @@ export default function ButtonAppBar() {
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" className={classes.title}>
-            New
+            Exercises Database
           </Typography>
-          <Button color="inherit">Login</Button>
+          <CreateDialog />
         </Toolbar>
       </AppBar>
     </div>
