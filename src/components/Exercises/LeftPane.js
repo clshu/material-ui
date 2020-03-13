@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from 'react'
+import React, { Fragment } from 'react'
 import {
   Paper,
   Typography,
@@ -6,15 +6,16 @@ import {
   ListItem,
   ListItemText
 } from '@material-ui/core'
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
+import { DISPLAY_EXERCISE } from '../../actions/types'
 
 const LeftPane = ({ styles }) => {
-  const [selectedIndex, setSelectedIndex] = useState(1)
   const exercises_by_muscles = useSelector(state => state.exercises_by_muscles)
+  const dispatch = useDispatch()
 
   const handleListItemClick = (index, exercise) => {
-    setSelectedIndex(index)
-    console.log(exercise)
+    // setSelectedIndex(index)
+    dispatch({ type: DISPLAY_EXERCISE, payload: exercise })
   }
 
   const renderExercises = muscles => {
@@ -22,7 +23,6 @@ const LeftPane = ({ styles }) => {
       <ListItem
         key={exercise.id}
         button
-        selected={selectedIndex === index}
         onClick={() => handleListItemClick(index, exercise)}
       >
         <ListItemText primary={exercise.title} />
@@ -42,11 +42,7 @@ const LeftPane = ({ styles }) => {
       </Fragment>
     ))
   }
-  // {
-  //   exercises_by_muscles[muscles].map(excercis => {
-  //     return
-  //   })
-  // }
+
   return (
     <Paper style={styles}>
       {renderExercisesByMuscles(exercises_by_muscles)}
