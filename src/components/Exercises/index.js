@@ -4,16 +4,23 @@ import RightPane from './RightPane'
 import LeftPane from './LeftPane'
 
 const style = {
-  Paper: { padding: 20, marginTop: 10, marginBottom: 20 }
+  Paper: {
+    padding: 20,
+    marginTop: 10,
+    marginBottom: 10,
+    height: 500,
+    overflowY: 'auto'
+  }
 }
+
 export default () => {
   return (
     <Grid container>
       <Grid item sm>
-        <LeftPane style={style.Paper} />
+        <LeftPane styles={style.Paper} />
       </Grid>
       <Grid item sm>
-        <RightPane style={style.Paper} />
+        <RightPane styles={style.Paper} />
       </Grid>
     </Grid>
   )

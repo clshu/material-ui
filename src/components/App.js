@@ -1,24 +1,24 @@
 import React, { Fragment } from 'react'
 import { Header, Footer } from './Layout'
 import { useEffect } from 'react'
-import { useSelector, useDispatch } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { fetchMuscles, fetchExercises } from '../actions'
 import Exercises from './Exercises'
 
 const App = () => {
-  const muscles = useSelector(state => state.muscles.map(m => m.name))
-  const exercises = useSelector(state => state.exercises)
   const dispatch = useDispatch()
 
   // Similar to componentDidMount
-  // Only run once with [] as 2nd paramter
+  // Only run once with [dispatch] as 2nd paramter
+  // [] also works but with warnings, linter suggested
+  // to use dispatch
   useEffect(() => {
     dispatch(fetchMuscles())
-  }, [])
+  }, [dispatch])
 
   useEffect(() => {
     dispatch(fetchExercises())
-  }, [])
+  }, [dispatch])
 
   return (
     <Fragment>
