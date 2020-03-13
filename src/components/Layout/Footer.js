@@ -22,23 +22,14 @@ export default function CenteredTabs() {
   useEffect(() => {}, [dispatch])
   const handleChange = (event, newValue) => {
     setValue(newValue)
+    // Get All muscles groups or get one group
+    // All groups is '', one group pass the muscles name
+    const group = newValue === 0 ? '' : muscles[newValue - 1].name
+    dispatch(fetchExercisesByMuscles(group))
   }
 
   const renderMuscleList = muscles => {
-    return muscles.map(muscle => (
-      <Tab
-        onClick={() => onClickOne(muscle.name)}
-        key={muscle.id}
-        label={muscle.name}
-      />
-    ))
-  }
-
-  const onClickAll = () => {
-    dispatch(fetchExercisesByMuscles(''))
-  }
-  const onClickOne = group => {
-    dispatch(fetchExercisesByMuscles(group))
+    return muscles.map(muscle => <Tab key={muscle.id} label={muscle.name} />)
   }
 
   return (
@@ -50,7 +41,7 @@ export default function CenteredTabs() {
         textColor="primary"
         centered
       >
-        <Tab key="0" label="All" onClick={onClickAll} />
+        <Tab key="0" label="All" />
         {renderMuscleList(muscles)}
       </Tabs>
     </Paper>
