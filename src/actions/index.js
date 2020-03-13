@@ -2,7 +2,8 @@ import jsonserver from '../apis/jsonserver'
 import {
   FETCH_MUSCLES,
   FETCH_EXERCISES,
-  FETCH_EXERCISES_BY_MUSCLES
+  FETCH_EXERCISES_BY_MUSCLES,
+  CREATE_EXERCISE
 } from './types'
 
 export const fetchMuscles = () => async dispatch => {
@@ -13,6 +14,11 @@ export const fetchMuscles = () => async dispatch => {
 export const fetchExercises = () => async dispatch => {
   const response = await jsonserver.get('/exercises')
   dispatch({ type: FETCH_EXERCISES, payload: response.data })
+}
+
+export const createExercise = exercise => async dispatch => {
+  const response = await jsonserver.post('/exercises', exercise)
+  dispatch({ type: CREATE_EXERCISE, payload: response.data })
 }
 
 export const fetchExercisesByMuscles = muscles_group => (

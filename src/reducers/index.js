@@ -3,7 +3,8 @@ import {
   FETCH_MUSCLES,
   FETCH_EXERCISES,
   FETCH_EXERCISES_BY_MUSCLES,
-  DISPLAY_EXERCISE
+  DISPLAY_EXERCISE,
+  CREATE_EXERCISE
 } from '../actions/types'
 
 const musclesReducer = (state = [], action) => {
@@ -19,6 +20,8 @@ const exercisesReducer = (state = [], action) => {
   switch (action.type) {
     case FETCH_EXERCISES:
       return action.payload
+    case CREATE_EXERCISE:
+      return [...state, action.payload]
     default:
       return state
   }
