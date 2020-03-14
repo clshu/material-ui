@@ -65,40 +65,16 @@
       "muscles": "legs"
     },
     {
-      "title": "",
-      "description": "",
-      "muscles": "",
-      "id": 8
-    },
-    {
       "title": "Push Up",
       "description": "Push Up more",
       "muscles": "chest",
       "id": 9
     },
     {
-      "title": "",
-      "description": "",
-      "muscles": "",
+      "title": "More Push Ups",
+      "description": "More More Pushu Ups",
+      "muscles": "chest",
       "id": 10
-    },
-    {
-      "title": "My Exercise",
-      "description": "My Exercise 123",
-      "muscles": "arms",
-      "id": 11
-    },
-    {
-      "title": "My Shoulder's Exercise",
-      "description": "My Shoulder's Exercise 1234",
-      "muscles": "shoulders",
-      "id": 12
-    },
-    {
-      "title": "",
-      "description": "",
-      "muscles": "",
-      "id": 13
     }
   ]
 }

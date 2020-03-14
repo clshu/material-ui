@@ -1,9 +1,12 @@
 import jsonserver from '../apis/jsonserver'
 import {
+  NO_OP,
   FETCH_MUSCLES,
   FETCH_EXERCISES,
   FETCH_EXERCISES_BY_MUSCLES,
-  CREATE_EXERCISE
+  CREATE_EXERCISE,
+  DELETE_EXERCISE,
+  DISPLAY_EXERCISE
 } from './types'
 
 export const fetchMuscles = () => async dispatch => {
@@ -16,9 +19,18 @@ export const fetchExercises = () => async dispatch => {
   dispatch({ type: FETCH_EXERCISES, payload: response.data })
 }
 
-export const createExercise = exercise => async dispatch => {
+export const createExercise = exercise => async (dispatch, getStore) => {
   const response = await jsonserver.post('/exercises', exercise)
   dispatch({ type: CREATE_EXERCISE, payload: response.data })
+  dispatch(updateExercisesByMuscles())
+}
+
+export const deleteExercise = exercise => async dispatch => {
+  await jsonserver.delete(`/exercises/${exercise.id}`)
+
+  dispatch({ type: DELETE_EXERCISE, payload: exercise.id })
+  dispatch(updateExercisesByMuscles())
+  dispatch(updateExerciseDisplayed(exercise))
 }
 
 export const fetchExercisesByMuscles = muscles_group => (
@@ -42,18 +54,52 @@ export const fetchExercisesByMuscles = muscles_group => (
       {}
     )
   } else {
-    // Get One muscels group
+    // Get One muscles group
     let exercises = store.exercises.filter(e => e.muscles === muscles_group)
     exercises_by_muscles[muscles_group] = exercises
   }
 
-  // const exercises_by_muscles = {}
-  //
-  // store.muscles.map(m => {
-  //   let exercises = store.exercises.filter(e => e.muscles === m.name)
-  //   exercises_by_muscles[m.name] = exercises
-  //   return m.name
-  // })
-
   dispatch({ type: FETCH_EXERCISES_BY_MUSCLES, payload: exercises_by_muscles })
+}
+
+export const updateExercisesByMuscles = () => (dispatch, getStore) => {
+  // Update store.exercises_by_muscles
+  // This is called after addExercise or deleteExercise
+  // is done. And the store.exercise is up to date.
+  const exercises_by_muscles = getStore().exercises_by_muscles
+  const keys = Object.keys(exercises_by_muscles)
+
+  switch (keys.length) {
+    case 0:
+      // First Page loading. It should't be able to create
+      // a new exercise. But just want to cover all code paths
+      dispatch({ type: NO_OP })
+      break
+    case 1:
+      // Single Muscle Group Existed
+      dispatch(fetchExercisesByMuscles(keys[0]))
+      break
+    default:
+      // All Muscles Groups Existed
+      dispatch(fetchExercisesByMuscles(''))
+  }
+}
+
+export const updateExerciseDisplayed = deleted_exercise => (
+  dispatch,
+  getStore
+) => {
+  // Update store.exercise_displayed
+  const exercise_displayed = getStore().exercise_displayed
+  // Remove it if store.exercise_displayed is
+  // the deleted exercise
+  if (exercise_displayed.id === deleted_exercise.id) {
+    const empty_obj = {
+      titile: '',
+      description: ''
+    }
+    dispatch({ type: DISPLAY_EXERCISE, payload: empty_obj })
+  } else {
+    dispatch({ type: NO_OP })
+  }
 }

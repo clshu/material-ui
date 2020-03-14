@@ -1,10 +1,12 @@
 import { combineReducers } from 'redux'
 import {
+  DEFAULT_EXERCISE_DISPLAYED,
   FETCH_MUSCLES,
   FETCH_EXERCISES,
   FETCH_EXERCISES_BY_MUSCLES,
   DISPLAY_EXERCISE,
-  CREATE_EXERCISE
+  CREATE_EXERCISE,
+  DELETE_EXERCISE
 } from '../actions/types'
 
 const musclesReducer = (state = [], action) => {
@@ -22,6 +24,8 @@ const exercisesReducer = (state = [], action) => {
       return action.payload
     case CREATE_EXERCISE:
       return [...state, action.payload]
+    case DELETE_EXERCISE:
+      return state.filter(exercise => exercise.id !== action.payload)
     default:
       return state
   }
@@ -36,11 +40,6 @@ const exercisesByMusclesReducer = (state = {}, action) => {
   }
 }
 
-const DEFAULT_EXERCISE_DISPLAYED = {
-  title: 'Welcome!',
-  description:
-    'Click a muscle group on the bottom first. Then select an excercise from the list on the left.'
-}
 const exerciseDisplayedReducer = (
   state = DEFAULT_EXERCISE_DISPLAYED,
   action
