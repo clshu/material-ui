@@ -4,6 +4,7 @@ import { useEffect } from 'react'
 import { useDispatch } from 'react-redux'
 import { fetchMuscles, fetchExercises } from '../actions'
 import Exercises from './Exercises'
+import FormDialog from './Exercises/FormDialog'
 
 const App = () => {
   const dispatch = useDispatch()
@@ -24,6 +25,7 @@ const App = () => {
     <Fragment>
       <Header />
       <Exercises />
+      <FormDialog />
       <Footer />
     </Fragment>
   )

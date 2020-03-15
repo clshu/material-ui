@@ -21,10 +21,19 @@ export const fetchExercises = () => async dispatch => {
   dispatch({ type: FETCH_EXERCISES, payload: response.data })
 }
 
-export const createExercise = exercise => async (dispatch, getStore) => {
+export const createExercise = exercise => async dispatch => {
   const response = await jsonserver.post('/exercises', exercise)
+
   dispatch({ type: CREATE_EXERCISE, payload: response.data })
   dispatch(updateExercisesByMuscles())
+}
+
+export const editExercise = exercise => async dispatch => {
+  const response = await jsonserver.patch(`/exercises/${exercise.id}`, exercise)
+  dispatch({ type: EDIT_EXERCISE, payload: response.data })
+
+  dispatch(updateExercisesByMuscles())
+  dispatch(updateExerciseDisplayed('EDIT', exercise))
 }
 
 export const deleteExercise = exercise => async dispatch => {
@@ -33,14 +42,6 @@ export const deleteExercise = exercise => async dispatch => {
   dispatch({ type: DELETE_EXERCISE, payload: exercise.id })
   dispatch(updateExercisesByMuscles())
   dispatch(updateExerciseDisplayed('DELETE', exercise))
-}
-
-export const editExercise = exercise => async dispatch => {
-  const response = await jsonserver.patch(`/exercises/${exercise.id}`, exercise)
-
-  dispatch({ type: EDIT_EXERCISE, payload: response.data })
-  dispatch(updateExercisesByMuscles())
-  dispatch(updateExerciseDisplayed('EDIT', exercise))
 }
 
 export const fetchExercisesByMuscles = muscles_group => (

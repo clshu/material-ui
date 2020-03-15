@@ -99,6 +99,12 @@
       "description": "102 des",
       "muscles": "arms",
       "id": 15
+    },
+    {
+      "title": "Sh exer 789",
+      "description": "789",
+      "muscles": "shoulders",
+      "id": 18
     }
   ]
 }

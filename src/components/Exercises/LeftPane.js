@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import {
   Paper,
   Typography,
@@ -9,29 +9,22 @@ import {
   IconButton
 } from '@material-ui/core'
 import { useSelector, useDispatch } from 'react-redux'
-import { DISPLAY_EXERCISE } from '../../actions/types'
+import { DISPLAY_EXERCISE, OPEN_FORM_DIALOG } from '../../actions/types'
 import { Delete, Edit } from '@material-ui/icons'
 
 import { deleteExercise } from '../../actions'
-import FormDialog from '../Exercises/Dialog'
 
 const LeftPane = ({ styles }) => {
-  const [open, setOpen] = useState(false)
   const exercises_by_muscles = useSelector(state => state.exercises_by_muscles)
   const dispatch = useDispatch()
 
-  const handleOpen = () => {
-    console.log('Edit Button')
-    // setOpen(true)
-  }
-
-  const handleClose = () => {
-    setOpen(false)
-  }
-
   const handleListItemClick = exercise => {
-    // setSelectedIndex(index)
     dispatch({ type: DISPLAY_EXERCISE, payload: exercise })
+  }
+
+  const onEdit = exercise => {
+    const payload = { title: 'Edit an Exercise', exercise }
+    dispatch({ type: OPEN_FORM_DIALOG, payload })
   }
 
   const onDelete = exercise => {
@@ -46,14 +39,8 @@ const LeftPane = ({ styles }) => {
         onClick={() => handleListItemClick(exercise)}
       >
         <ListItemText primary={exercise.title} />
-        <FormDialog
-          title="Edit an Exercise"
-          open={open}
-          handleClose={handleClose}
-          exercise={exercise}
-        />
         <ListItemSecondaryAction>
-          <IconButton onClick={() => handleOpen()}>
+          <IconButton onClick={() => onEdit(exercise)}>
             <Edit />
           </IconButton>
           <IconButton onClick={() => onDelete(exercise)}>

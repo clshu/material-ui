@@ -7,7 +7,9 @@ import {
   DISPLAY_EXERCISE,
   CREATE_EXERCISE,
   DELETE_EXERCISE,
-  EDIT_EXERCISE
+  EDIT_EXERCISE,
+  OPEN_FORM_DIALOG,
+  CLOSE_FORM_DIALOG
 } from '../actions/types'
 
 const musclesReducer = (state = [], action) => {
@@ -56,9 +58,32 @@ const exerciseDisplayedReducer = (
   }
 }
 
+const DEFAULT_FORM_DIALOG = {
+  open: false,
+  title: '',
+  exercise: null
+}
+
+const formDialogRedecer = (state = DEFAULT_FORM_DIALOG, action) => {
+  switch (action.type) {
+    case OPEN_FORM_DIALOG:
+      const { title, exercise } = action.payload
+      return {
+        open: true,
+        title,
+        exercise
+      }
+    case CLOSE_FORM_DIALOG:
+      return DEFAULT_FORM_DIALOG
+    default:
+      return state
+  }
+}
+
 export default combineReducers({
   muscles: musclesReducer,
   exercises: exercisesReducer,
   exercises_by_muscles: exercisesByMusclesReducer,
-  exercise_displayed: exerciseDisplayedReducer
+  exercise_displayed: exerciseDisplayedReducer,
+  form_dialog: formDialogRedecer
 })

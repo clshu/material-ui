@@ -1,9 +1,9 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { TextField, MenuItem, Button, FormControl } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 
-import { createExercise } from '../../actions'
+import { createExercise, editExercise } from '../../actions'
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -22,18 +22,34 @@ export default function Form(props) {
   const muscles_groups = useSelector(state => state.muscles)
   const dispatch = useDispatch()
 
-  if (props.exercise) {
-    const { title, description, muscles } = props.exercise
-    setTitle(title)
-    setDescription(description)
-    setMuscles(muscles)
-  }
+  // It's important to use useEffect
+  // If not, setTitle, setDescription, setMuscles
+  // combined with useSelector will make it rerender over and over
+  //  Error message:
+  // Uncaught Error: Too many re-renders.
+  //  React limits the number of renders to prevent an infinite loop.
+
+  useEffect(() => {
+    if (props.exercise) {
+      const { title, description, muscles } = props.exercise
+      setTitle(title)
+      setDescription(description)
+      setMuscles(muscles)
+    }
+  }, [props.exercise])
 
   const handleSubmit = event => {
     event.preventDefault()
+
     if (props.exercise) {
-      console.log(props.exercise)
-      console.log({ title, description, muscles })
+      const updated_exercise = {
+        id: props.exercise.id,
+        title,
+        description,
+        muscles
+      }
+
+      dispatch(editExercise(updated_exercise))
     } else {
       dispatch(createExercise({ title, description, muscles }))
     }
