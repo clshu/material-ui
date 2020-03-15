@@ -6,7 +6,8 @@ import {
   FETCH_EXERCISES_BY_MUSCLES,
   DISPLAY_EXERCISE,
   CREATE_EXERCISE,
-  DELETE_EXERCISE
+  DELETE_EXERCISE,
+  EDIT_EXERCISE
 } from '../actions/types'
 
 const musclesReducer = (state = [], action) => {
@@ -24,6 +25,9 @@ const exercisesReducer = (state = [], action) => {
       return action.payload
     case CREATE_EXERCISE:
       return [...state, action.payload]
+    case EDIT_EXERCISE:
+      const trimmed_exercises = state.filter(e => e.id !== action.payload.id)
+      return [...trimmed_exercises, action.payload]
     case DELETE_EXERCISE:
       return state.filter(exercise => exercise.id !== action.payload)
     default:

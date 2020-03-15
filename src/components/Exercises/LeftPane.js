@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import {
   Paper,
   Typography,
@@ -10,13 +10,24 @@ import {
 } from '@material-ui/core'
 import { useSelector, useDispatch } from 'react-redux'
 import { DISPLAY_EXERCISE } from '../../actions/types'
-import { Delete } from '@material-ui/icons'
+import { Delete, Edit } from '@material-ui/icons'
 
 import { deleteExercise } from '../../actions'
+import FormDialog from '../Exercises/Dialog'
 
 const LeftPane = ({ styles }) => {
+  const [open, setOpen] = useState(false)
   const exercises_by_muscles = useSelector(state => state.exercises_by_muscles)
   const dispatch = useDispatch()
+
+  const handleOpen = () => {
+    console.log('Edit Button')
+    // setOpen(true)
+  }
+
+  const handleClose = () => {
+    setOpen(false)
+  }
 
   const handleListItemClick = exercise => {
     // setSelectedIndex(index)
@@ -35,7 +46,16 @@ const LeftPane = ({ styles }) => {
         onClick={() => handleListItemClick(exercise)}
       >
         <ListItemText primary={exercise.title} />
+        <FormDialog
+          title="Edit an Exercise"
+          open={open}
+          handleClose={handleClose}
+          exercise={exercise}
+        />
         <ListItemSecondaryAction>
+          <IconButton onClick={() => handleOpen()}>
+            <Edit />
+          </IconButton>
           <IconButton onClick={() => onDelete(exercise)}>
             <Delete />
           </IconButton>
