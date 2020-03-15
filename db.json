@@ -71,18 +71,6 @@
       "id": 9
     },
     {
-      "title": "Arms Exe 101",
-      "description": "101 Desc",
-      "muscles": "arms",
-      "id": 11
-    },
-    {
-      "title": "ShExer 100",
-      "description": "100 Desc",
-      "muscles": "shoulders",
-      "id": 12
-    },
-    {
       "title": "Chest Ex 100",
       "description": "100 Desc",
       "muscles": "chest",
@@ -101,8 +89,8 @@
       "id": 15
     },
     {
-      "title": "Sh exer 789",
-      "description": "789",
+      "title": "Sh exer 9000",
+      "description": "91000",
       "muscles": "shoulders",
       "id": 18
     }

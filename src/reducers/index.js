@@ -4,7 +4,9 @@ import {
   FETCH_MUSCLES,
   FETCH_EXERCISES,
   FETCH_EXERCISES_BY_MUSCLES,
-  DISPLAY_EXERCISE,
+  DISPLAY_SELECTED_EXERCISE,
+  EDIT_SELECTED_EXERCISE,
+  DELETE_SELECTED_EXERCISE,
   CREATE_EXERCISE,
   DELETE_EXERCISE,
   EDIT_EXERCISE,
@@ -46,13 +48,32 @@ const exercisesByMusclesReducer = (state = {}, action) => {
   }
 }
 
+const EMPTY_EXERCISE = {
+  id: DEFAULT_EXERCISE_DISPLAYED.id + 1,
+  title: '',
+  description: ''
+}
+
 const exerciseDisplayedReducer = (
   state = DEFAULT_EXERCISE_DISPLAYED,
   action
 ) => {
   switch (action.type) {
-    case DISPLAY_EXERCISE:
+    case DISPLAY_SELECTED_EXERCISE:
       return action.payload
+    case DELETE_SELECTED_EXERCISE:
+      if (state.id === action.payload) {
+        // payload is id
+        return EMPTY_EXERCISE
+      } else {
+        return state
+      }
+    case EDIT_SELECTED_EXERCISE:
+      if (state.id === action.payload.id) {
+        return action.payload
+      } else {
+        return state
+      }
     default:
       return state
   }

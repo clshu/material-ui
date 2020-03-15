@@ -1,14 +1,14 @@
 import jsonserver from '../apis/jsonserver'
 import {
   NO_OP,
-  DEFAULT_EXERCISE_DISPLAYED,
   FETCH_MUSCLES,
   FETCH_EXERCISES,
   FETCH_EXERCISES_BY_MUSCLES,
   CREATE_EXERCISE,
   DELETE_EXERCISE,
   EDIT_EXERCISE,
-  DISPLAY_EXERCISE
+  EDIT_SELECTED_EXERCISE,
+  DELETE_SELECTED_EXERCISE
 } from './types'
 
 export const fetchMuscles = () => async dispatch => {
@@ -33,7 +33,7 @@ export const editExercise = exercise => async dispatch => {
   dispatch({ type: EDIT_EXERCISE, payload: response.data })
 
   dispatch(updateExercisesByMuscles())
-  dispatch(updateExerciseDisplayed('EDIT', exercise))
+  dispatch({ type: EDIT_SELECTED_EXERCISE, payload: response.data })
 }
 
 export const deleteExercise = exercise => async dispatch => {
@@ -41,7 +41,7 @@ export const deleteExercise = exercise => async dispatch => {
 
   dispatch({ type: DELETE_EXERCISE, payload: exercise.id })
   dispatch(updateExercisesByMuscles())
-  dispatch(updateExerciseDisplayed('DELETE', exercise))
+  dispatch({ type: DELETE_SELECTED_EXERCISE, payload: exercise.id })
 }
 
 export const fetchExercisesByMuscles = muscles_group => (
@@ -73,7 +73,8 @@ export const fetchExercisesByMuscles = muscles_group => (
   dispatch({ type: FETCH_EXERCISES_BY_MUSCLES, payload: exercises_by_muscles })
 }
 
-export const updateExercisesByMuscles = () => (dispatch, getStore) => {
+// Internal Funtion
+const updateExercisesByMuscles = () => (dispatch, getStore) => {
   // Update store.exercises_by_muscles
   // This is called after addExercise or deleteExercise
   // is done. And the store.exercise is up to date.
@@ -93,44 +94,5 @@ export const updateExercisesByMuscles = () => (dispatch, getStore) => {
     default:
       // All Muscles Groups Existed
       dispatch(fetchExercisesByMuscles(''))
-  }
-}
-
-export const updateExerciseDisplayed = (type, updated_exercise) => (
-  dispatch,
-  getStore
-) => {
-  // Update store.exercise_displayed
-  const exercise_displayed = getStore().exercise_displayed
-
-  if (exercise_displayed.id === updated_exercise.id) {
-    // store.exercise_displayed is the updated exercise
-    switch (type) {
-      case 'DELETE':
-        // Remove it
-        const empty_obj = {
-          id: DEFAULT_EXERCISE_DISPLAYED.id + 1,
-          title: '',
-          description: ''
-        }
-        dispatch({
-          type: DISPLAY_EXERCISE,
-          payload: empty_obj
-        })
-        break
-      case 'EDIT':
-        // Replace it
-        dispatch({
-          type: DISPLAY_EXERCISE,
-          payload: updated_exercise
-        })
-        break
-      default:
-        // Cover all code paths
-        dispatch({ type: NO_OP })
-    }
-  } else {
-    // No op if it's not the same exercise
-    dispatch({ type: NO_OP })
   }
 }

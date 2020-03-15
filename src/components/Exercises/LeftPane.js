@@ -9,7 +9,10 @@ import {
   IconButton
 } from '@material-ui/core'
 import { useSelector, useDispatch } from 'react-redux'
-import { DISPLAY_EXERCISE, OPEN_FORM_DIALOG } from '../../actions/types'
+import {
+  DISPLAY_SELECTED_EXERCISE,
+  OPEN_FORM_DIALOG
+} from '../../actions/types'
 import { Delete, Edit } from '@material-ui/icons'
 
 import { deleteExercise } from '../../actions'
@@ -19,7 +22,7 @@ const LeftPane = ({ styles }) => {
   const dispatch = useDispatch()
 
   const handleListItemClick = exercise => {
-    dispatch({ type: DISPLAY_EXERCISE, payload: exercise })
+    dispatch({ type: DISPLAY_SELECTED_EXERCISE, payload: exercise })
   }
 
   const onEdit = exercise => {
